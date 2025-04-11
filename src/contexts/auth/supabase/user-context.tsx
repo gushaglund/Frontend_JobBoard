@@ -67,6 +67,7 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
               name: (user.user_metadata?.full_name as string) ?? undefined,
               avatar: (user.user_metadata?.avatar_url as string) ?? undefined,
               role: role ?? 'client',
+              access_token: session?.access_token ?? undefined,
             } satisfies User)
           : null,
         error: null,
@@ -93,6 +94,7 @@ export function UserProvider({ children }: UserProviderProps): React.JSX.Element
               name: (user.user_metadata?.full_name as string) ?? undefined,
               avatar: (user.user_metadata?.avatar_url as string) ?? undefined,
               role: role ?? 'client',
+              access_token: session?.access_token ?? undefined,
             } satisfies User)
           : null,
         error: null,

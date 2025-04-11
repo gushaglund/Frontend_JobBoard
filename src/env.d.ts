@@ -41,6 +41,10 @@ export interface Env {
 
   // Google Tag Manager
   NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID?: string;
+
+  // Airtable
+  NEXT_PUBLIC_AIRTABLE_API_KEY?: string;
+  NEXT_PUBLIC_AIRTABLE_BASE_ID?: string;
 }
 
 declare global {

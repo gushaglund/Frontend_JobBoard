@@ -4,6 +4,7 @@ export interface User {
   avatar?: string;
   email?: string;
   role: 'client' | 'teammate' | 'admin';
+  access_token?: string;
 
   [key: string]: unknown;
 }

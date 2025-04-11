@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { CircularProgress } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,11 +13,13 @@ import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import Stack from '@mui/material/Stack';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { CaretLeft as CaretLeftIcon } from '@phosphor-icons/react/dist/ssr/CaretLeft';
 import { CaretRight as CaretRightIcon } from '@phosphor-icons/react/dist/ssr/CaretRight';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
 import { createClient } from '@supabase/supabase-js';
+import Airtable from 'airtable';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { config } from '@/config';
@@ -48,6 +50,13 @@ const paymentTypeOptions = [
 interface JobsFiltersProps {
   onFilterChange: (filters: { keyword?: string; workTypes?: string[]; paymentTypes?: string[] }) => void;
 }
+
+const StyledFilterWrapper = styled('div')(({ theme }) => ({
+  '& .MuiSelect-select': {
+    minWidth: '200px',
+    padding: theme.spacing(1.5),
+  },
+}));
 
 function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
   const [keyword, setKeyword] = React.useState('');
@@ -102,55 +111,31 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
         sx={{ alignItems: 'center', flexWrap: 'wrap', justifyContent: 'space-between', p: 1 }}
       >
         <Stack direction="row" spacing={2} sx={{ flexWrap: 'wrap', gap: 1 }}>
-          <MultiSelect
-            label="Remote / In person"
-            options={workTypeOptions}
-            value={selectedWorkTypes}
-            onChange={handleWorkTypeChange}
-            sx={{
-              minWidth: 200,
-              '& .MuiSelect-select': {
-                py: 1.5,
-                bgcolor: selectedWorkTypes.length > 0 ? 'primary.50' : 'transparent',
-                borderColor: selectedWorkTypes.length > 0 ? 'primary.main' : 'divider',
-              },
-              '& .MuiChip-root': {
-                bgcolor: 'primary.main',
-                color: 'primary.contrastText',
-                fontWeight: 'medium',
-              },
-              '& .MuiSvgIcon-root': {
-                color: selectedWorkTypes.length > 0 ? 'primary.main' : 'action.active',
-              },
-            }}
-          />
-          <MultiSelect
-            label="Paid / Unpaid"
-            options={paymentTypeOptions}
-            value={selectedPaymentTypes}
-            onChange={handlePaymentTypeChange}
-            sx={{
-              minWidth: 200,
-              '& .MuiSelect-select': {
-                py: 1.5,
-                bgcolor: selectedPaymentTypes.length > 0 ? 'primary.50' : 'transparent',
-                borderColor: selectedPaymentTypes.length > 0 ? 'primary.main' : 'divider',
-              },
-              '& .MuiChip-root': {
-                bgcolor: 'primary.main',
-                color: 'primary.contrastText',
-                fontWeight: 'medium',
-              },
-              '& .MuiSvgIcon-root': {
-                color: selectedPaymentTypes.length > 0 ? 'primary.main' : 'action.active',
-              },
-            }}
-          />
+          <StyledFilterWrapper>
+            <MultiSelect
+              label="Remote / In person"
+              options={workTypeOptions}
+              value={selectedWorkTypes}
+              onChange={handleWorkTypeChange}
+            />
+          </StyledFilterWrapper>
+          <StyledFilterWrapper>
+            <MultiSelect
+              label="Paid / Unpaid"
+              options={paymentTypeOptions}
+              value={selectedPaymentTypes}
+              onChange={handlePaymentTypeChange}
+            />
+          </StyledFilterWrapper>
         </Stack>
       </Stack>
     </Card>
   );
 }
+
+const base = new Airtable({
+  apiKey: config.airtable.apiKey,
+}).base(config.airtable.baseId || '');
 
 export function JobsList(): React.JSX.Element {
   const userContext = useContext(UserContext);
@@ -167,6 +152,7 @@ export function JobsList(): React.JSX.Element {
     workTypes: [] as string[],
     paymentTypes: [] as string[],
   });
+  const [candidateType, setCandidateType] = React.useState<string | null>(null);
 
   if (!userContext) {
     throw new Error('UserContext is not available. Make sure the component is wrapped in a UserProvider.');
@@ -198,22 +184,31 @@ export function JobsList(): React.JSX.Element {
       }
 
       try {
-        const { data, error } = await supabase.from('allowed_users').select('*').ilike('Emails', user.email).single();
+        const userTypeRecords = await base('Summer 2025 Apps')
+          .select({
+            view: 'All Applications',
+            filterByFormula: `{Email} = '${user.email}'`,
+            fields: ['Canidate Type'],
+          })
+          .all();
 
-        if (error) {
+        if (!userTypeRecords || userTypeRecords.length === 0) {
+          void router.push('https://forms.fillout.com/t/7Eethb9V2wus?id=');
           await signOutUser();
-        } else if (data) {
-          setLoading(false);
-        } else {
-          await signOutUser();
+          return;
         }
+
+        const userCandidateType = userTypeRecords[0].get('Canidate Type') as string;
+        setCandidateType(userCandidateType);
+        setLoading(false);
       } catch (err) {
         await signOutUser();
+        void router.push('https://forms.fillout.com/t/7Eethb9V2wus?id=');
       }
     };
 
     void checkUser();
-  }, [user?.email, signOutUser, supabase]);
+  }, [user?.email, signOutUser, router]);
 
   const fetchJobs = React.useCallback(async () => {
     try {
@@ -223,9 +218,10 @@ export function JobsList(): React.JSX.Element {
         ...(filters.keyword && { keyword: filters.keyword }),
         ...(filters.workTypes.length > 0 && { workTypes: filters.workTypes.join(',') }),
         ...(filters.paymentTypes.length > 0 && { paymentTypes: filters.paymentTypes.join(',') }),
+        user: user?.access_token || '',
       });
 
-      const response = await fetch(`https://backend.searchfundfellows.com/api/jobs/pro-jobs?${queryParams.toString()}`);
+      const response = await fetch(`https://backend.searchfundfellows.com/api/jobs/jobs?${queryParams.toString()}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -263,8 +259,12 @@ export function JobsList(): React.JSX.Element {
     }
   };
 
-  const handleUndergraduateClick = () => {
-    router.push('/dashboard/common-jobs');
+  const handleSwitchJobsPage = () => {
+    if (candidateType === 'Experienced Professional') {
+      router.push('/dashboard/common-jobs');
+    } else {
+      router.push('/dashboard/jobs');
+    }
   };
 
   if (loading) {
@@ -320,32 +320,10 @@ export function JobsList(): React.JSX.Element {
               <Stack spacing={3}>
                 <Stack spacing={2}>
                   <Typography color="inherit" variant="h3">
-                    Experienced Professionals and MBAs
+                    {candidateType === 'Experienced Professional'
+                      ? 'Experienced Professionals and MBAs'
+                      : 'Undergraduates and Recent Graduates'}
                   </Typography>
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Button
-                      variant="text"
-                      onClick={handleUndergraduateClick}
-                      sx={{
-                        color: 'var(--mui-palette-warning-main)',
-                        fontSize: '1rem',
-                        fontWeight: 500,
-                        textAlign: 'left',
-                        justifyContent: 'flex-start',
-                        padding: 0,
-                        '&:hover': {
-                          backgroundColor: 'transparent',
-                          textDecoration: 'underline',
-                        },
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 0.5,
-                      }}
-                    >
-                      Go to Undergraduates & Recent Graduates
-                      <span style={{ marginLeft: '4px' }}>→</span>
-                    </Button>
-                  </Stack>
                 </Stack>
               </Stack>
             </Grid>

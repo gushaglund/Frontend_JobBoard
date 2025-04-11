@@ -26,6 +26,7 @@ export interface Config {
     storageBucket?: string;
   };
   supabase: { url?: string; anonKey?: string; roleKey?: string };
+  airtable: { apiKey?: string; baseId?: string };
   mapbox: { apiKey?: string };
   gtm?: { id?: string };
 }
@@ -66,6 +67,10 @@ export const config = {
     url: process.env.NEXT_PUBLIC_SUPABASE_URL,
     anonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     roleKey: process.env.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE_KEY,
+  },
+  airtable: {
+    apiKey: process.env.NEXT_PUBLIC_AIRTABLE_API_KEY,
+    baseId: process.env.NEXT_PUBLIC_AIRTABLE_BASE_ID,
   },
   mapbox: { apiKey: process.env.NEXT_PUBLIC_MAPBOX_API_KEY },
   gtm: { id: process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID },

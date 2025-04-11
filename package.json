@@ -49,6 +49,7 @@
     "@tiptap/extension-placeholder": "2.8.0",
     "@tiptap/react": "2.8.0",
     "@tiptap/starter-kit": "2.8.0",
+    "airtable": "^0.12.2",
     "aws-amplify": "6.6.5",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
