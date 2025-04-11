@@ -63,8 +63,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: 'Something went wrong' });
   }
 
-  const next = searchParams.get('next') || paths.home;
+  const next = searchParams.get('next') || paths.dashboard.overview;
   console.log('Redirecting to:', next);
 
-  return NextResponse.redirect(new URL(next, origin));
+  return NextResponse.redirect(new URL(next, 'https://jobslist.searchfundfellows.com/dashboard'));
 }
