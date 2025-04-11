@@ -137,6 +137,8 @@ const base = new Airtable({
   apiKey: config.airtable.apiKey,
 }).base(config.airtable.baseId || '');
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function JobsList(): React.JSX.Element {
   const userContext = useContext(UserContext);
   const supabaseClient = useMemo(() => createSupabaseClient(), []);
@@ -194,6 +196,7 @@ export function JobsList(): React.JSX.Element {
 
         if (!userTypeRecords || userTypeRecords.length === 0) {
           void router.push('https://forms.fillout.com/t/7Eethb9V2wus?id=');
+          await delay(1000); // 0.5 second delay
           await signOutUser();
           return;
         }
@@ -203,6 +206,7 @@ export function JobsList(): React.JSX.Element {
         setLoading(false);
       } catch (err) {
         void router.push('https://forms.fillout.com/t/7Eethb9V2wus?id=');
+        await delay(1000); // 0.5 second delay
         await signOutUser();
       }
     };
