@@ -202,8 +202,8 @@ export function JobsList(): React.JSX.Element {
         setCandidateType(userCandidateType);
         setLoading(false);
       } catch (err) {
-        await signOutUser();
         void router.push('https://forms.fillout.com/t/7Eethb9V2wus?id=');
+        await signOutUser();
       }
     };
 
