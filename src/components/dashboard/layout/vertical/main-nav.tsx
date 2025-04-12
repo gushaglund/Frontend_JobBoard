@@ -103,13 +103,13 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
                 justifyContent: 'flex-end',
               }}
             >
-              <NotificationsButton />
-              <Divider
+              {/* <NotificationsButton /> */}
+              {/* <Divider
                 flexItem
                 orientation="vertical"
                 sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', lg: 'block' } }}
               />
-              <UserButton />
+              <UserButton /> */}
             </Stack>
           </Stack>
         </Box>
