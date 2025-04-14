@@ -104,12 +104,12 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
               }}
             >
               {/* <NotificationsButton /> */}
-              {/* <Divider
+              <Divider
                 flexItem
                 orientation="vertical"
                 sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', lg: 'block' } }}
               />
-              <UserButton /> */}
+              <UserButton />
             </Stack>
           </Stack>
         </Box>
