@@ -40,6 +40,7 @@ export interface Job {
   externalLink?: string;
   status: string;
   jobType: string;
+  created_At: string;
 }
 
 interface JobCardProps {
@@ -164,6 +165,15 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                   }}
                 />
               ) : null}
+              <Chip
+                label={`Created_At: ${dayjs(job.created_At).format('MMM D, YYYY')}`}
+                size="small"
+                sx={{
+                  backgroundColor: 'var(--mui-palette-neutral-50)',
+                  color: 'var(--mui-palette-neutral-700)',
+                  fontWeight: 500,
+                }}
+              />
               <Chip
                 label={`Start: ${dayjs(job.idealStartDate).format('MMM D, YYYY')}`}
                 size="small"

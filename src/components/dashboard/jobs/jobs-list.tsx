@@ -174,14 +174,15 @@ export function JobsList(): React.JSX.Element {
         .all();
 
       if (!userTypeRecords || userTypeRecords.length === 0) {
-        return;
+        setCandidateType('Not Found');
+        setUserEmail('');
+      } else {
+        const userCandidateType = userTypeRecords[0].get('Canidate Type') as string;
+        setCandidateType(userCandidateType);
+        setUserEmail(email);
+        // Save email to localStorage
+        localStorage.setItem('userEmail', email);
       }
-
-      const userCandidateType = userTypeRecords[0].get('Canidate Type') as string;
-      setCandidateType(userCandidateType);
-      setUserEmail(email);
-      // Save email to localStorage
-      localStorage.setItem('userEmail', email);
     } catch (err) {
       toast.error('Error checking user type. Please try again.');
     }
@@ -237,14 +238,6 @@ export function JobsList(): React.JSX.Element {
     }
   };
 
-  // if (showEmailModal) {
-  //   return <EmailModal open={showEmailModal} onClose={() => {}} onSubmit={checkUserType} />;
-  // }
-
-  // if (showFormRedirectModal) {
-  //   return <FormRedirectModal open={showFormRedirectModal} onClose={() => {}} onRedirect={handleFormRedirect} />;
-  // }
-
   return (
     <Box
       sx={{
@@ -255,7 +248,7 @@ export function JobsList(): React.JSX.Element {
       }}
     >
       <Stack spacing={4}>
-        {candidateType ? (
+        {candidateType !== 'Not Found' ? (
           <Box
             sx={{
               bgcolor: 'var(--mui-palette-neutral-900)',
