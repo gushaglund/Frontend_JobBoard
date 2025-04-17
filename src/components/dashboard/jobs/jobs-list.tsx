@@ -165,7 +165,7 @@ export function JobsList(): React.JSX.Element {
 
   const checkUserType = async (email: string) => {
     try {
-      const userTypeRecords = await base('Summer 2025 Apps')
+      const userTypeRecords = await base('SFF Candidate Database')
         .select({
           view: 'All Applications',
           filterByFormula: `{Email} = '${email}'`,
