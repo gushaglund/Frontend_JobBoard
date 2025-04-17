@@ -1,11 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import RouterLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -19,7 +17,6 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
-import { DynamicLogo } from '@/components/core/logo';
 
 const schema = zod.object({ email: zod.string().min(1, { message: 'Email is required' }).email() });
 

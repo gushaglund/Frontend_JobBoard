@@ -1,23 +1,21 @@
 'use client';
 
 import * as React from 'react';
+import RouterLink from 'next/link';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
-import { Bell as BellIcon } from '@phosphor-icons/react/dist/ssr/Bell';
 import { List as ListIcon } from '@phosphor-icons/react/dist/ssr/List';
 
 import type { NavItemConfig } from '@/types/nav';
 import { usePopover } from '@/hooks/use-popover';
 import { useUser } from '@/hooks/use-user';
+import { Logo } from '@/components/core/logo';
 
 import { MobileNav } from '../mobile-nav';
-import { NotificationsPopover } from '../notifications-popover';
 import { UserPopover } from '../user-popover/user-popover';
 
 export interface MainNavProps {
@@ -33,7 +31,7 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
         sx={{
           '--MainNav-background': 'var(--mui-palette-background-default)',
           '--MainNav-divider': 'var(--mui-palette-divider)',
-          bgcolor: '#f5f5f5',
+          bgcolor: '#3278ff',
           left: 0,
           position: 'sticky',
           pt: { lg: 'var(--Layout-gap)' },
@@ -84,16 +82,11 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
                 alignItems: 'center',
               }}
             >
-              <Box sx={{ display: 'inline-flex', textDecoration: 'none' }}>
-                <Typography
-                  variant="h5"
-                  fontWeight="bold"
-                  fontFamily="'Mollen Personal Use', sans-serif"
-                  color="#143066"
-                >
-                  Search Fund Fellows
-                </Typography>
-              </Box>
+              <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto', pt: '5px', pb: '5px' }}>
+                <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
+                  <Logo color="light" height={35} width={220} />
+                </Box>
+              </Stack>
             </Stack>
             <Stack
               direction="row"
@@ -103,7 +96,6 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
                 justifyContent: 'flex-end',
               }}
             >
-              {/* <NotificationsButton /> */}
               <Divider
                 flexItem
                 orientation="vertical"
@@ -121,28 +113,6 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
         }}
         open={openNav}
       />
-    </React.Fragment>
-  );
-}
-
-function NotificationsButton(): React.JSX.Element {
-  const popover = usePopover<HTMLButtonElement>();
-
-  return (
-    <React.Fragment>
-      <Tooltip title="Notifications">
-        <Badge
-          color="error"
-          sx={{ '& .MuiBadge-dot': { borderRadius: '50%', height: '10px', right: '6px', top: '6px', width: '10px' } }}
-          variant="dot"
-        >
-          {/* <IconButton onClick={popover.handleOpen} ref={popover.anchorRef}> */}
-          <IconButton>
-            <BellIcon />
-          </IconButton>
-        </Badge>
-      </Tooltip>
-      <NotificationsPopover anchorEl={popover.anchorRef.current} onClose={popover.handleClose} open={popover.open} />
     </React.Fragment>
   );
 }

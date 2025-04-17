@@ -15,7 +15,7 @@ import Typography from '@mui/material/Typography';
 import { CaretLeft as CaretLeftIcon } from '@phosphor-icons/react/dist/ssr/CaretLeft';
 import { CaretRight as CaretRightIcon } from '@phosphor-icons/react/dist/ssr/CaretRight';
 import { MagnifyingGlass as MagnifyingGlassIcon } from '@phosphor-icons/react/dist/ssr/MagnifyingGlass';
-import Airtable from 'airtable';
+// import Airtable from 'airtable';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { config } from '@/config';
@@ -42,8 +42,18 @@ const paymentTypeOptions = [
   { label: 'Unpaid', value: 'Unpaid' },
 ] as const;
 
+const jobTypeOptions = [
+  { label: 'Early Career', value: 'Early Career' },
+  { label: 'Experienced', value: 'Experienced' },
+] as const;
+
 interface JobsFiltersProps {
-  onFilterChange: (filters: { keyword?: string; workTypes?: string[]; paymentTypes?: string[] }) => void;
+  onFilterChange: (filters: {
+    keyword?: string;
+    workTypes?: string[];
+    paymentTypes?: string[];
+    jobTypes?: string[];
+  }) => void;
 }
 
 const StyledFilterWrapper = styled('div')(({ theme }) => ({
@@ -57,6 +67,7 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
   const [keyword, setKeyword] = React.useState('');
   const [selectedWorkTypes, setSelectedWorkTypes] = React.useState<string[]>([]);
   const [selectedPaymentTypes, setSelectedPaymentTypes] = React.useState<string[]>([]);
+  const [selectedJobTypes, setSelectedJobTypes] = React.useState<string[]>([]);
 
   const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
@@ -64,6 +75,7 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
       keyword: event.target.value,
       workTypes: selectedWorkTypes,
       paymentTypes: selectedPaymentTypes,
+      jobTypes: selectedJobTypes,
     });
   };
 
@@ -73,6 +85,7 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
       keyword,
       workTypes: values,
       paymentTypes: selectedPaymentTypes,
+      jobTypes: selectedJobTypes,
     });
   };
 
@@ -82,6 +95,17 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
       keyword,
       workTypes: selectedWorkTypes,
       paymentTypes: values,
+      jobTypes: selectedJobTypes,
+    });
+  };
+
+  const handleJobTypeChange = (values: string[]) => {
+    setSelectedJobTypes(values);
+    onFilterChange({
+      keyword,
+      workTypes: selectedWorkTypes,
+      paymentTypes: selectedPaymentTypes,
+      jobTypes: values,
     });
   };
 
@@ -122,74 +146,83 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
               onChange={handlePaymentTypeChange}
             />
           </StyledFilterWrapper>
+          <StyledFilterWrapper>
+            <MultiSelect
+              label="Job Type"
+              options={jobTypeOptions}
+              value={selectedJobTypes}
+              onChange={handleJobTypeChange}
+            />
+          </StyledFilterWrapper>
         </Stack>
       </Stack>
     </Card>
   );
 }
 
-const base = new Airtable({
-  apiKey: config.airtable.apiKey,
-}).base(config.airtable.baseId || '');
+// const base = new Airtable({
+//   apiKey: config.airtable.apiKey,
+// }).base(config.airtable.baseId || '');
 
 export function JobsList(): React.JSX.Element {
   const userContext = useContext(UserContext);
   if (!userContext) {
     throw new Error('UserContext is not available. Make sure the component is wrapped in a UserProvider.');
   }
-  const { user } = userContext;
+  // const { user } = userContext;
 
   const [jobs, setJobs] = React.useState<Job[]>([]);
   const [page, setPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(1);
   const [hasNextPage, setHasNextPage] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [candidateType, setCandidateType] = React.useState<string | null>(null);
-  const [userEmail, setUserEmail] = React.useState<string>('');
+  // const [candidateType, setCandidateType] = React.useState<string | null>(null);
+  // const [userEmail, setUserEmail] = React.useState<string>('');
   const [filters, setFilters] = React.useState({
     keyword: '',
     workTypes: [] as string[],
     paymentTypes: [] as string[],
+    jobTypes: [] as string[],
   });
 
   if (!config.supabase.url || !config.supabase.roleKey) {
     throw new Error('Supabase URL or roleKey is not defined.');
   }
 
-  // Check for saved email on component mount
-  React.useEffect(() => {
-    if (user?.email) {
-      void checkUserType(user?.email);
-    }
-  }, [user]);
+  // // Check for saved email on component mount
+  // React.useEffect(() => {
+  //   if (user?.email) {
+  //     void checkUserType(user?.email);
+  //   }
+  // }, [user]);
 
-  const checkUserType = async (email: string) => {
-    try {
-      const userTypeRecords = await base('SFF Candidate Database')
-        .select({
-          view: 'All Applications',
-          filterByFormula: `{Email} = '${email}'`,
-          fields: ['Canidate Type'],
-        })
-        .all();
+  // const checkUserType = async (email: string) => {
+  //   try {
+  //     const userTypeRecords = await base('SFF Candidate Database')
+  //       .select({
+  //         view: 'All Applications',
+  //         filterByFormula: `{Email} = '${email}'`,
+  //         fields: ['Canidate Type'],
+  //       })
+  //       .all();
 
-      if (!userTypeRecords || userTypeRecords.length === 0) {
-        setCandidateType('Not Found');
-        setUserEmail('');
-      } else {
-        const userCandidateType = userTypeRecords[0].get('Canidate Type') as string;
-        setCandidateType(userCandidateType);
-        setUserEmail(email);
-        // Save email to localStorage
-        localStorage.setItem('userEmail', email);
-      }
-    } catch (err) {
-      toast.error('Error checking user type. Please try again.');
-    }
-  };
+  //     if (!userTypeRecords || userTypeRecords.length === 0) {
+  //       setCandidateType('Not Found');
+  //       setUserEmail('');
+  //     } else {
+  //       const userCandidateType = userTypeRecords[0].get('Canidate Type') as string;
+  //       setCandidateType(userCandidateType);
+  //       setUserEmail(email);
+  //       // Save email to localStorage
+  //       localStorage.setItem('userEmail', email);
+  //     }
+  //   } catch (err) {
+  //     toast.error('Error checking user type. Please try again.');
+  //   }
+  // };
 
   const fetchJobs = React.useCallback(async () => {
-    if (!candidateType) return;
+    // if (!candidateType) return;
 
     try {
       setIsLoading(true);
@@ -198,7 +231,8 @@ export function JobsList(): React.JSX.Element {
         ...(filters.keyword && { keyword: filters.keyword }),
         ...(filters.workTypes.length > 0 && { workTypes: filters.workTypes.join(',') }),
         ...(filters.paymentTypes.length > 0 && { paymentTypes: filters.paymentTypes.join(',') }),
-        user: userEmail,
+        ...(filters.jobTypes.length > 0 && { jobTypes: filters.jobTypes.join(',') }),
+        // user: userEmail,
       });
 
       const response = await fetch(`https://backend.searchfundfellows.com/api/jobs/jobs?${queryParams.toString()}`);
@@ -215,13 +249,18 @@ export function JobsList(): React.JSX.Element {
     } finally {
       setIsLoading(false);
     }
-  }, [page, filters, candidateType, userEmail]);
+  }, [page, filters]);
 
   React.useEffect(() => {
     void fetchJobs();
   }, [fetchJobs]);
 
-  const handleFilterChange = (newFilters: { keyword?: string; workTypes?: string[]; paymentTypes?: string[] }) => {
+  const handleFilterChange = (newFilters: {
+    keyword?: string;
+    workTypes?: string[];
+    paymentTypes?: string[];
+    jobTypes?: string[];
+  }) => {
     setFilters((prev) => ({ ...prev, ...newFilters }));
     setPage(1); // Reset to first page when filters change
   };
@@ -248,49 +287,50 @@ export function JobsList(): React.JSX.Element {
       }}
     >
       <Stack spacing={4}>
-        {candidateType !== 'Not Found' ? (
-          <Box
-            sx={{
-              bgcolor: 'var(--mui-palette-neutral-900)',
-              borderRadius: 1,
-              color: 'var(--mui-palette-common-white)',
-              px: 4,
-              py: 8,
-            }}
-          >
-            <Grid container sx={{ alignItems: 'center' }}>
-              <Grid
-                size={{
-                  sm: 7,
-                  xs: 12,
-                }}
-              >
-                <Stack spacing={3}>
-                  <Stack spacing={2}>
-                    <Typography color="inherit" variant="h3">
-                      {candidateType === 'Experienced Professional'
+        {/* {candidateType !== 'Not Found' ? ( */}
+        <Box
+          sx={{
+            bgcolor: '#219bc5',
+            borderRadius: 1,
+            color: 'var(--mui-palette-common-white)',
+            px: 4,
+            py: 8,
+          }}
+        >
+          <Grid container sx={{ alignItems: 'center' }}>
+            <Grid
+              size={{
+                sm: 7,
+                xs: 12,
+              }}
+            >
+              <Stack spacing={3}>
+                <Stack spacing={2}>
+                  <Typography color="inherit" variant="h3">
+                    {/* {candidateType === 'Experienced Professional'
                         ? 'Experienced Professionals and MBAs'
-                        : 'Undergraduates and Recent Graduates'}
-                    </Typography>
-                  </Stack>
+                        : 'Undergraduates and Recent Graduates'} */}
+                    Gain Experience in Search Funds and SMB M&A
+                  </Typography>
                 </Stack>
-              </Grid>
-              <Grid
-                sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'center' }}
-                size={{
-                  sm: 5,
-                }}
-              >
-                <Box
-                  alt="Shield"
-                  component="img"
-                  src="/assets/iconly-glass-shield.svg"
-                  sx={{ height: '100px', width: '100px' }}
-                />
-              </Grid>
+              </Stack>
             </Grid>
-          </Box>
-        ) : null}
+            <Grid
+              sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'center' }}
+              size={{
+                sm: 5,
+              }}
+            >
+              <Box
+                alt="Shield"
+                component="img"
+                src="/assets/iconly-glass-shield.svg"
+                sx={{ height: '100px', width: '100px' }}
+              />
+            </Grid>
+          </Grid>
+        </Box>
+        {/* ) : null} */}
         <JobsFilters onFilterChange={handleFilterChange} />
         <AnimatePresence mode="wait">
           {isLoading ? (

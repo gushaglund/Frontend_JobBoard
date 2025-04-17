@@ -39,8 +39,8 @@ export interface Job {
   ats: string;
   externalLink?: string;
   status: string;
-  jobType: string;
   created_At: string;
+  jobType: string[];
 }
 
 interface JobCardProps {
@@ -131,6 +131,18 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               <Typography variant="h5" sx={{ fontWeight: 600 }}>
                 {job.jobTitle}
               </Typography>
+              {job.jobType.map((type) => (
+                <Chip
+                  key={type}
+                  label={type}
+                  size="small"
+                  sx={{
+                    backgroundColor: 'var(--mui-palette-success-50)',
+                    color: '#219bc5',
+                    fontWeight: 500,
+                  }}
+                />
+              ))}
               {job.remoteInPerson === 'Remote' ? (
                 <Chip
                   label="Remote"
@@ -141,7 +153,17 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                     fontWeight: 500,
                   }}
                 />
-              ) : null}
+              ) : (
+                <Chip
+                  label="In person"
+                  size="small"
+                  sx={{
+                    backgroundColor: 'var(--mui-palette-success-50)',
+                    color: 'var(--mui-palette-success-main)',
+                    fontWeight: 500,
+                  }}
+                />
+              )}
             </Stack>
             <Box>
               <Typography
@@ -181,7 +203,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                 />
               ) : null}
               <Chip
-                label={`Created_At: ${dayjs(job.created_At).format('MMM D, YYYY')}`}
+                label={`Posted on: ${dayjs(job.created_At).format('MMM D, YYYY')}`}
                 size="small"
                 sx={{
                   backgroundColor: 'var(--mui-palette-neutral-50)',

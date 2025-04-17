@@ -5,10 +5,8 @@ import RouterLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
-import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -23,15 +21,6 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
-import { toast } from '@/components/core/toaster';
-
-interface OAuthProvider {
-  id: 'google' | 'discord';
-  name: string;
-  logo: string;
-}
-
-const oAuthProviders = [{ id: 'google', name: 'Google', logo: '/assets/logo-google.svg' }] satisfies OAuthProvider[];
 
 const schema = zod.object({
   firstName: zod.string().min(1, { message: 'First name is required' }),
@@ -58,30 +47,6 @@ export function SignUpForm(): React.JSX.Element {
     setError,
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
-
-  const onAuth = React.useCallback(
-    async (providerId: OAuthProvider['id']): Promise<void> => {
-      setIsPending(true);
-
-      const redirectToUrl = new URL(paths.auth.supabase.callback.pkce, window.location.origin);
-      redirectToUrl.searchParams.set('next', paths.dashboard.overview);
-
-      const { data, error } = await supabaseClient.auth.signInWithOAuth({
-        provider: providerId,
-        options: { redirectTo: redirectToUrl.href },
-      });
-
-      if (error) {
-        setIsPending(false);
-        toast.error(error.message);
-        return;
-      }
-
-      window.location.href = data.url;
-      console.log(data.url, 'data.url');
-    },
-    [supabaseClient]
-  );
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {

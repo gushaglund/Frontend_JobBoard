@@ -28,7 +28,7 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
           <Container maxWidth="lg" sx={{ display: 'flex', minHeight: 'var(--MainNav-height)', py: '15px', ml: '-5px' }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
               <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
-                <Logo color="light" height={40} width={280} />
+                <Logo color="light" height={35} width={220} />
               </Box>
             </Stack>
           </Container>
