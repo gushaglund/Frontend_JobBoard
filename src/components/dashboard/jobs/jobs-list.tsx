@@ -306,7 +306,7 @@ export function JobsList(): React.JSX.Element {
             >
               <Stack spacing={3}>
                 <Stack spacing={2}>
-                  <Typography color="inherit" variant="h3">
+                  <Typography color="inherit" variant="h4">
                     {/* {candidateType === 'Experienced Professional'
                         ? 'Experienced Professionals and MBAs'
                         : 'Undergraduates and Recent Graduates'} */}
