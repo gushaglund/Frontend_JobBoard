@@ -117,7 +117,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
             mb: 2,
             color: 'var(--mui-palette-text-secondary)',
             display: '-webkit-box',
-            WebkitLineClamp: 3,
+            WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
             overflow: 'hidden',
           }}
@@ -128,7 +128,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
         <Stack spacing={2}>
           <Box>
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+              <Typography variant="h5" sx={{ fontWeight: 600 }}>
                 {job.jobTitle}
               </Typography>
               {job.remoteInPerson === 'Remote' ? (
@@ -143,6 +143,21 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                 />
               ) : null}
             </Stack>
+            <Box>
+              <Typography
+                variant="body1"
+                sx={{
+                  mb: 2,
+                  color: 'var(--mui-palette-text-secondary)',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}
+              >
+                {job.companyDescription}
+              </Typography>
+            </Box>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
               <Chip
                 label={`${job.paidUnpaid} • ${job.hoursPerWeek} hours/week`}
