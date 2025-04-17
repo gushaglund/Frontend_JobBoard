@@ -5,9 +5,7 @@ import RouterLink from 'next/link';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
@@ -23,15 +21,6 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
-import { toast } from '@/components/core/toaster';
-
-interface OAuthProvider {
-  id: 'google' | 'discord';
-  name: string;
-  logo: string;
-}
-
-const oAuthProviders = [{ id: 'google', name: 'Google', logo: '/assets/logo-google.svg' }] satisfies OAuthProvider[];
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
@@ -57,30 +46,6 @@ export function SignInForm(): React.JSX.Element {
     setError,
     formState: { errors },
   } = useForm<Values>({ defaultValues, resolver: zodResolver(schema) });
-
-  const onAuth = React.useCallback(
-    async (providerId: OAuthProvider['id']): Promise<void> => {
-      setIsPending(true);
-
-      // const redirectToUrl = new URL(paths.auth.supabase.callback.pkce, window.location.origin);
-      // redirectToUrl.searchParams.set('next', paths.dashboard.overview);
-
-      const { error } = await supabaseClient.auth.signInWithOAuth({
-        provider: providerId,
-        // options: { redirectTo: redirectToUrl.href },
-      });
-
-      if (error) {
-        setIsPending(false);
-        toast.error(error.message);
-        return;
-      }
-
-      // window.location.href = data.url;
-      // console.log(data.url, 'data.url');
-    },
-    [supabaseClient]
-  );
 
   const onSubmit = React.useCallback(
     async (values: Values): Promise<void> => {
@@ -115,7 +80,7 @@ export function SignInForm(): React.JSX.Element {
         <Typography variant="h5">Sign in</Typography>
         <Typography color="text.secondary" variant="body2">
           Don&apos;t have an account?{' '}
-          <Link component={RouterLink} href={paths.auth.supabase.signUp} variant="subtitle2">
+          <Link component={RouterLink} href={paths.auth.supabase.signUp} variant="subtitle2" sx={{ color: '#3278ff' }}>
             Sign up
           </Link>
         </Typography>
@@ -169,13 +134,18 @@ export function SignInForm(): React.JSX.Element {
                 )}
               />
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-              <Button disabled={isPending} type="submit" variant="contained">
+              <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#3278ff', color: '#ffffff' }}>
                 Sign in
               </Button>
             </Stack>
           </form>
           <div>
-            <Link component={RouterLink} href={paths.auth.supabase.resetPassword} variant="subtitle2">
+            <Link
+              component={RouterLink}
+              href={paths.auth.supabase.resetPassword}
+              variant="subtitle2"
+              sx={{ color: '#3278ff' }}
+            >
               Forgot password?
             </Link>
           </div>

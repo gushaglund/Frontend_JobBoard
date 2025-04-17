@@ -66,11 +66,6 @@ export function ResetPasswordForm(): React.JSX.Element {
 
   return (
     <Stack spacing={4}>
-      <div>
-        <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-block', fontSize: 0 }}>
-          <DynamicLogo colorDark="light" colorLight="dark" height={32} width={122} />
-        </Box>
-      </div>
       <Typography variant="h5">Reset password</Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
@@ -87,7 +82,7 @@ export function ResetPasswordForm(): React.JSX.Element {
               )}
             />
             {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-            <Button disabled={isPending} type="submit" variant="contained">
+            <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#3278ff', color: '#ffffff' }}>
               Send recovery link
             </Button>
           </Stack>

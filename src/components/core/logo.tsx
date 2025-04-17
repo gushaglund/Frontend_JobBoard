@@ -22,9 +22,9 @@ export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH }:
   let url: string;
 
   if (emblem) {
-    url = color === 'light' ? '/assets/AS Live Symbol Transparent.png' : '/assets/AS Live Symbol Transparent.png';
+    url = color === 'light' ? '/assets/logo.webp' : '/assets/logo.webp';
   } else {
-    url = color === 'light' ? '/assets/AS Live Symbol Transparent.png' : '/assets/AS Live Symbol Transparent.png';
+    url = color === 'light' ? '/assets/logo.webp' : '/assets/logo.webp';
   }
 
   return <Box alt="logo" component="img" height={height} src={url} width={width} />;

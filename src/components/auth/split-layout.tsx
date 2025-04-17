@@ -1,9 +1,7 @@
 import * as React from 'react';
 import RouterLink from 'next/link';
-import { Container, Stack, Typography } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import Box from '@mui/material/Box';
-
-import { paths } from '@/paths';
 
 import { Logo } from '../core/logo';
 
@@ -18,7 +16,7 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
         <Box
           component="header"
           sx={{
-            bgcolor: '#f5f5f5',
+            bgcolor: '#3278ff',
             color: '#143066',
             left: 0,
             position: 'sticky',
@@ -29,22 +27,8 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
         >
           <Container maxWidth="lg" sx={{ display: 'flex', minHeight: 'var(--MainNav-height)', py: '15px', ml: '-5px' }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
-              {/* <Box component={RouterLink} href={paths.home} sx={{ display: 'inline-flex' }}>
-                <Logo color="light" height={50} width={50} />
-              </Box> */}
-              <Box component="nav" sx={{ display: { xs: 'none', md: 'block' } }}>
-                <Stack component="ul" direction="row" spacing={1} sx={{ listStyle: 'none', m: 0, p: 0 }}>
-                  <Box sx={{ display: 'inline-flex', textDecoration: 'none' }}>
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      fontFamily="'Mollen Personal Use', sans-serif"
-                      color="#143066"
-                    >
-                      Search Fund Fellows
-                    </Typography>
-                  </Box>
-                </Stack>
+              <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
+                <Logo color="light" height={40} width={280} />
               </Box>
             </Stack>
           </Container>
@@ -56,10 +40,12 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: '100vh',
+          bgcolor: '#219bc5',
         }}
       >
         <Box
           sx={{
+            bgcolor: '#ffffff',
             boxShadow: 'var(--mui-shadows-8)',
             display: 'flex',
             flexDirection: 'column',
@@ -68,6 +54,7 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
             maxWidth: '420px',
             width: '100%',
             p: 3,
+            borderRadius: '20px',
           }}
         >
           {children}
