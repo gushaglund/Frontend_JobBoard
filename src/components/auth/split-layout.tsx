@@ -16,7 +16,7 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
         <Box
           component="header"
           sx={{
-            bgcolor: '#F4F8FF',
+            bgcolor: '#edf9f7',
             color: '#143066',
             left: 0,
             position: 'sticky',

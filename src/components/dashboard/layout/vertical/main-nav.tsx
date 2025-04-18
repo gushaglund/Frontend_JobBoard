@@ -30,14 +30,15 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
         component="header"
         sx={{
           '--MainNav-background': 'var(--mui-palette-background-default)',
-          '--MainNav-divider': 'var(--mui-palette-divider)',
-          bgcolor: '#F4F8FF',
+          // '--MainNav-divider': 'var(--mui-palette-divider)',
+          bgcolor: '#edf9f7',
           left: 0,
           position: 'sticky',
           pt: { lg: 'var(--Layout-gap)' },
           top: 0,
           width: '100%',
           zIndex: 'var(--MainNav-zIndex)',
+          height: 60,
         }}
       >
         <Box
@@ -110,13 +111,13 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
           </Stack>
         </Box>
       </Box>
-      <MobileNav
+      {/* <MobileNav
         items={items}
         onClose={() => {
           setOpenNav(false);
         }}
         open={openNav}
-      />
+      /> */}
     </React.Fragment>
   );
 }

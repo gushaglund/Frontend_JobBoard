@@ -117,13 +117,13 @@ export function MainNav({ color = 'evident', items = [] }: MainNavProps): React.
           {renderNavGroups({ items, pathname })}
         </Box>
       </Box>
-      <MobileNav
+      {/* <MobileNav
         items={items}
         onClose={() => {
           setOpenNav(false);
         }}
         open={openNav}
-      />
+      /> */}
     </React.Fragment>
   );
 }
