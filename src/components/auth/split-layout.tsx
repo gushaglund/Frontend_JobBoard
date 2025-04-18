@@ -16,7 +16,7 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
         <Box
           component="header"
           sx={{
-            bgcolor: '#3278ff',
+            bgcolor: '#F4F8FF',
             color: '#143066',
             left: 0,
             position: 'sticky',
@@ -25,10 +25,10 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
             zIndex: 'var(--MainNav-zIndex)',
           }}
         >
-          <Container maxWidth="lg" sx={{ display: 'flex', minHeight: 'var(--MainNav-height)', py: '15px', ml: '-5px' }}>
+          <Container maxWidth="lg" sx={{ display: 'flex', minHeight: 'var(--MainNav-height)', py: '15px', ml: 20 }}>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto' }}>
               <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
-                <Logo color="light" height={35} width={220} />
+                <Logo color="light" height={30} width={180} />
               </Box>
             </Stack>
           </Container>
@@ -40,7 +40,7 @@ export function SplitLayout({ children }: SplitLayoutProps): React.JSX.Element {
           justifyContent: 'center',
           alignItems: 'center',
           minHeight: '100vh',
-          bgcolor: '#219bc5',
+          bgcolor: '#082439',
         }}
       >
         <Box

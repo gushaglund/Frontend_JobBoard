@@ -290,7 +290,7 @@ export function JobsList(): React.JSX.Element {
         {/* {candidateType !== 'Not Found' ? ( */}
         <Box
           sx={{
-            bgcolor: '#219bc5',
+            bgcolor: '#082439',
             borderRadius: 1,
             color: 'var(--mui-palette-common-white)',
             px: 4,
@@ -310,7 +310,7 @@ export function JobsList(): React.JSX.Element {
                     {/* {candidateType === 'Experienced Professional'
                         ? 'Experienced Professionals and MBAs'
                         : 'Undergraduates and Recent Graduates'} */}
-                    Gain Experience in Search Funds and SMB M&A
+                    Gain Experience in Search Funds and Small Business M&A
                   </Typography>
                 </Stack>
               </Stack>

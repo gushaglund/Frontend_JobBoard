@@ -96,7 +96,7 @@ export function SignUpForm(): React.JSX.Element {
         <Typography variant="h5">Sign up</Typography>
         <Typography color="text.secondary" variant="body2">
           Already have an account?{' '}
-          <Link component={RouterLink} href={paths.auth.supabase.signIn} variant="subtitle2" sx={{ color: '#3278ff' }}>
+          <Link component={RouterLink} href={paths.auth.supabase.signIn} variant="subtitle2" sx={{ color: '#52CAB1' }}>
             Sign in
           </Link>
         </Typography>
@@ -157,7 +157,7 @@ export function SignUpForm(): React.JSX.Element {
                     control={<Checkbox {...field} />}
                     label={
                       <React.Fragment>
-                        I have read the <Link sx={{ color: '#3278ff' }}>terms and conditions</Link>
+                        I have read the <Link sx={{ color: '#52CAB1' }}>terms and conditions</Link>
                       </React.Fragment>
                     }
                   />
@@ -166,7 +166,7 @@ export function SignUpForm(): React.JSX.Element {
               )}
             />
             {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-            <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#3278ff', color: '#ffffff' }}>
+            <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#52CAB1', color: '#ffffff' }}>
               Create account
             </Button>
           </Stack>

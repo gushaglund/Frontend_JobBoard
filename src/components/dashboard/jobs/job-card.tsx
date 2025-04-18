@@ -143,7 +143,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                   }}
                 />
               ))}
-              {job.remoteInPerson === 'Remote' ? (
+              {/* {job.remoteInPerson === 'Remote' ? (
                 <Chip
                   label="Remote"
                   size="small"
@@ -163,7 +163,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                     fontWeight: 500,
                   }}
                 />
-              )}
+              )} */}
             </Stack>
             <Box>
               <Typography
@@ -182,7 +182,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
             </Box>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
               <Chip
-                label={`${job.paidUnpaid} • ${job.hoursPerWeek} hours/week`}
+                label={`${job.remoteInPerson} • ${job.paidUnpaid} • ${job.hoursPerWeek} hours/week`}
                 size="small"
                 sx={{
                   backgroundColor: 'var(--mui-palette-neutral-50)',

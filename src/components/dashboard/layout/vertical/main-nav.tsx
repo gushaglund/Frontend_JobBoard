@@ -31,7 +31,7 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
         sx={{
           '--MainNav-background': 'var(--mui-palette-background-default)',
           '--MainNav-divider': 'var(--mui-palette-divider)',
-          bgcolor: '#3278ff',
+          bgcolor: '#F4F8FF',
           left: 0,
           position: 'sticky',
           pt: { lg: 'var(--Layout-gap)' },
@@ -82,9 +82,13 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
                 alignItems: 'center',
               }}
             >
-              <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flex: '1 1 auto', pt: '5px', pb: '5px' }}>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{ alignItems: 'center', flex: '1 1 auto', pt: '5px', pb: '5px', ml: 20 }}
+              >
                 <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
-                  <Logo color="light" height={35} width={220} />
+                  <Logo color="light" height={30} width={180} />
                 </Box>
               </Stack>
             </Stack>

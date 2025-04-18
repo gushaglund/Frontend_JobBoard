@@ -22,9 +22,9 @@ export function Logo({ color = 'dark', emblem, height = HEIGHT, width = WIDTH }:
   let url: string;
 
   if (emblem) {
-    url = color === 'light' ? '/assets/logo.webp' : '/assets/logo.webp';
+    url = color === 'light' ? '/assets/searchfundfellow-logo.jpg' : '/assets/searchfundfellow-logo.jpg';
   } else {
-    url = color === 'light' ? '/assets/logo.webp' : '/assets/logo.webp';
+    url = color === 'light' ? '/assets/searchfundfellow-logo.jpg' : '/assets/searchfundfellow-logo.jpg';
   }
 
   return <Box alt="logo" component="img" height={height} src={url} width={width} />;

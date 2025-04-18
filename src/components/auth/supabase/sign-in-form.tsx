@@ -80,7 +80,7 @@ export function SignInForm(): React.JSX.Element {
         <Typography variant="h5">Sign in</Typography>
         <Typography color="text.secondary" variant="body2">
           Don&apos;t have an account?{' '}
-          <Link component={RouterLink} href={paths.auth.supabase.signUp} variant="subtitle2" sx={{ color: '#3278ff' }}>
+          <Link component={RouterLink} href={paths.auth.supabase.signUp} variant="subtitle2" sx={{ color: '#52CAB1' }}>
             Sign up
           </Link>
         </Typography>
@@ -134,7 +134,7 @@ export function SignInForm(): React.JSX.Element {
                 )}
               />
               {errors.root ? <Alert color="error">{errors.root.message}</Alert> : null}
-              <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#3278ff', color: '#ffffff' }}>
+              <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#52CAB1', color: '#ffffff' }}>
                 Sign in
               </Button>
             </Stack>
@@ -144,7 +144,7 @@ export function SignInForm(): React.JSX.Element {
               component={RouterLink}
               href={paths.auth.supabase.resetPassword}
               variant="subtitle2"
-              sx={{ color: '#3278ff' }}
+              sx={{ color: '#52CAB1' }}
             >
               Forgot password?
             </Link>
