@@ -92,17 +92,21 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
           </Stack>
         }
         subheader={
-          <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Chip
-              label={job.companyType}
-              size="small"
-              sx={{
-                backgroundColor: 'var(--mui-palette-primary-50)',
-                color: 'var(--mui-palette-primary-main)',
-                fontWeight: 500,
-              }}
-            />
-          </Stack>
+          <>
+            {job.companyType ? (
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                <Chip
+                  label={job.companyType}
+                  size="small"
+                  sx={{
+                    backgroundColor: 'var(--mui-palette-primary-50)',
+                    color: 'var(--mui-palette-primary-main)',
+                    fontWeight: 500,
+                  }}
+                />
+              </Stack>
+            ) : null}
+          </>
         }
         sx={{
           '& .MuiCardHeader-content': {
