@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useContext } from 'react';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Divider from '@mui/material/Divider';
@@ -165,6 +166,8 @@ function JobsFilters({ onFilterChange }: JobsFiltersProps): React.JSX.Element {
 // }).base(config.airtable.baseId || '');
 
 export function JobsList(): React.JSX.Element {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const userContext = useContext(UserContext);
   if (!userContext) {
     throw new Error('UserContext is not available. Make sure the component is wrapped in a UserProvider.');
@@ -306,7 +309,7 @@ export function JobsList(): React.JSX.Element {
             >
               <Stack spacing={3}>
                 <Stack spacing={2}>
-                  <Typography color="inherit" variant="h4">
+                  <Typography color="inherit" variant={isMobile ? 'h5' : 'h4'}>
                     {/* {candidateType === 'Experienced Professional'
                         ? 'Experienced Professionals and MBAs'
                         : 'Undergraduates and Recent Graduates'} */}

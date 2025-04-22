@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -54,6 +55,8 @@ const MotionCard = motion(Card);
 
 export function JobCard({ job }: JobCardProps): React.JSX.Element {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleDescription = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent card click when toggling description
@@ -192,8 +195,12 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
         <Divider sx={{ mb: 2, borderColor: 'var(--mui-palette-divider)' }} />
         <Stack spacing={2}>
           <Box>
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mb: 1 }}>
-              <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              spacing={1}
+              sx={{ alignItems: isMobile ? 'flex-start' : 'center', mb: 1 }}
+            >
+              <Typography variant="h5" sx={{ fontWeight: 600, fontSize: isMobile ? '1.2rem' : '1.5rem' }}>
                 {job.jobTitle}
               </Typography>
               {job.jobType.map((type) => (

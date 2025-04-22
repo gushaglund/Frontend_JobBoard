@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import RouterLink from 'next/link';
+import { useMediaQuery, useTheme } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Badge from '@mui/material/Badge';
 import Box from '@mui/material/Box';
@@ -24,6 +25,8 @@ export interface MainNavProps {
 
 export function MainNav({ items }: MainNavProps): React.JSX.Element {
   const [openNav, setOpenNav] = React.useState<boolean>(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <React.Fragment>
       <Box
@@ -38,7 +41,6 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
           top: 0,
           width: '100%',
           zIndex: 'var(--MainNav-zIndex)',
-          height: 60,
         }}
       >
         <Box
@@ -86,7 +88,7 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
               <Stack
                 direction="row"
                 spacing={2}
-                sx={{ alignItems: 'center', flex: '1 1 auto', pt: '5px', pb: '5px', ml: 20 }}
+                sx={{ alignItems: 'center', flex: '1 1 auto', pt: '5px', pb: '5px', ml: isMobile ? 0 : 20 }}
               >
                 <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
                   <Logo color="light" height={30} width={180} />
