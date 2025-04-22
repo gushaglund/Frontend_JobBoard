@@ -10,6 +10,8 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { ArrowSquareOut as ArrowSquareOutIcon } from '@phosphor-icons/react/dist/ssr/ArrowSquareOut';
+import { CaretDown as CaretDownIcon } from '@phosphor-icons/react/dist/ssr/CaretDown';
+import { CaretUp as CaretUpIcon } from '@phosphor-icons/react/dist/ssr/CaretUp';
 import { CheckCircle as CheckCircleIcon } from '@phosphor-icons/react/dist/ssr/CheckCircle';
 import { MapPin as MapPinIcon } from '@phosphor-icons/react/dist/ssr/MapPin';
 import dayjs from 'dayjs';
@@ -41,6 +43,7 @@ export interface Job {
   status: string;
   created_At: string;
   jobType: string[];
+  jobDescription: string;
 }
 
 interface JobCardProps {
@@ -50,12 +53,26 @@ interface JobCardProps {
 const MotionCard = motion(Card);
 
 export function JobCard({ job }: JobCardProps): React.JSX.Element {
+  const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
+
+  const toggleDescription = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent card click when toggling description
+    setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  const handleCardClick = () => {
+    if (job.jobPostingURL) {
+      window.open(job.jobPostingURL, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <MotionCard
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
       whileHover={{ y: -5 }}
+      onClick={handleCardClick}
       sx={{
         height: '100%',
         display: 'flex',
@@ -63,6 +80,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
         transition: 'transform 0.2s ease-in-out',
         '&:hover': {
           boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+          cursor: 'pointer',
         },
       }}
     >
@@ -115,19 +133,62 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
         }}
       />
       <CardContent sx={{ flexGrow: 1 }}>
-        <Typography
-          variant="body1"
-          sx={{
-            mb: 2,
-            color: 'var(--mui-palette-text-secondary)',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}
-        >
-          {job.companyDescription}
-        </Typography>
+        <Box sx={{ position: 'relative' }}>
+          <Typography
+            variant="body1"
+            sx={{
+              mb: 2,
+              color: 'var(--mui-palette-text-secondary)',
+              display: '-webkit-box',
+              WebkitLineClamp: isDescriptionExpanded ? 'none' : 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+              transition: 'all 0.3s ease',
+            }}
+          >
+            {job.companyDescription}
+          </Typography>
+          {job.companyDescription ? (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                mt: 1,
+              }}
+            >
+              <Typography
+                component="button"
+                onClick={toggleDescription}
+                sx={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--mui-palette-primary-main)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  fontSize: '0.875rem',
+                  fontWeight: 500,
+                  '&:hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
+              >
+                {isDescriptionExpanded ? (
+                  <>
+                    Show less
+                    <CaretUpIcon fontSize="var(--icon-fontSize-md)" />
+                  </>
+                ) : (
+                  <>
+                    See more
+                    <CaretDownIcon fontSize="var(--icon-fontSize-md)" />
+                  </>
+                )}
+              </Typography>
+            </Box>
+          ) : null}
+        </Box>
         <Divider sx={{ mb: 2, borderColor: 'var(--mui-palette-divider)' }} />
         <Stack spacing={2}>
           <Box>
@@ -147,27 +208,6 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                   }}
                 />
               ))}
-              {/* {job.remoteInPerson === 'Remote' ? (
-                <Chip
-                  label="Remote"
-                  size="small"
-                  sx={{
-                    backgroundColor: 'var(--mui-palette-success-50)',
-                    color: 'var(--mui-palette-success-main)',
-                    fontWeight: 500,
-                  }}
-                />
-              ) : (
-                <Chip
-                  label="In person"
-                  size="small"
-                  sx={{
-                    backgroundColor: 'var(--mui-palette-success-50)',
-                    color: 'var(--mui-palette-success-main)',
-                    fontWeight: 500,
-                  }}
-                />
-              )} */}
             </Stack>
             <Box>
               <Typography
@@ -181,7 +221,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                   overflow: 'hidden',
                 }}
               >
-                {job.companyDescription}
+                {job.jobDescription}
               </Typography>
             </Box>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
@@ -238,10 +278,11 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               {job.jobPostingURL && (
                 <Typography
                   variant="body2"
-                  component={motion.a}
-                  href={job.jobPostingURL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  component={motion.div}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent card click when clicking the link
+                    window.open(job.jobPostingURL, '_blank', 'noopener,noreferrer');
+                  }}
                   sx={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -249,6 +290,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                     color: 'var(--mui-palette-primary-main)',
                     fontWeight: 500,
                     textDecoration: 'none',
+                    cursor: 'pointer',
                     '&:hover': {
                       textDecoration: 'underline',
                     },
