@@ -17,6 +17,7 @@ import { CheckCircle as CheckCircleIcon } from '@phosphor-icons/react/dist/ssr/C
 import { MapPin as MapPinIcon } from '@phosphor-icons/react/dist/ssr/MapPin';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
+import ReactMarkdown from 'react-markdown';
 
 export interface Job {
   id: string;
@@ -53,14 +54,25 @@ interface JobCardProps {
 
 const MotionCard = motion(Card);
 
+// Utility to preprocess job description for markdown
+function preprocessJobDescription(desc: string) {
+  return desc ? desc.replace(/^●\s?/gm, '- ').replace(/\n{2,}/g, '\n\n') : '';
+}
+
 export function JobCard({ job }: JobCardProps): React.JSX.Element {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
+  const [isJobDescriptionExpanded, setIsJobDescriptionExpanded] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const toggleDescription = (event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent card click when toggling description
     setIsDescriptionExpanded(!isDescriptionExpanded);
+  };
+
+  const toggleJobDescription = (event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent card click when toggling description
+    setIsJobDescriptionExpanded(!isJobDescriptionExpanded);
   };
 
   const handleCardClick = () => {
@@ -80,10 +92,16 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        transition: 'transform 0.2s ease-in-out',
+        transition: 'all 0.2s ease-in-out',
+        border: '2px solid var(--mui-palette-divider)',
+        borderRadius: '16px',
+        backgroundColor: 'var(--mui-palette-background-paper)',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
         '&:hover': {
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.12)',
+          boxShadow: '0 16px 40px rgba(0, 0, 0, 0.12)',
           cursor: 'pointer',
+          borderColor: 'var(--mui-palette-primary-main)',
+          transform: 'translateY(-8px)',
         },
       }}
     >
@@ -97,14 +115,17 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               width: '48px',
               borderRadius: '12px',
               objectFit: 'cover',
-              border: '1px solid var(--mui-palette-divider)',
+              border: '2px solid var(--mui-palette-divider)',
+              backgroundColor: 'var(--mui-palette-background-default)',
+              padding: '2px',
+              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
             }}
             alt={`${job.companyName} logo`}
           />
         }
         title={
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'var(--mui-palette-text-primary)' }}>
               {job.companyName}
             </Typography>
             {job.status === 'Approved' ? (
@@ -115,7 +136,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
         subheader={
           <>
             {job.companyType ? (
-              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center', mt: 0.5 }}>
                 <Chip
                   label={job.companyType}
                   size="small"
@@ -123,6 +144,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                     backgroundColor: 'var(--mui-palette-primary-50)',
                     color: 'var(--mui-palette-primary-main)',
                     fontWeight: 500,
+                    height: '24px',
                   }}
                 />
               </Stack>
@@ -133,9 +155,10 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
           '& .MuiCardHeader-content': {
             overflow: 'hidden',
           },
+          padding: '24px 24px 16px',
         }}
       />
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent sx={{ flexGrow: 1, padding: '0 24px 24px' }}>
         <Box sx={{ position: 'relative' }}>
           <Typography
             variant="body1"
@@ -147,6 +170,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               transition: 'all 0.3s ease',
+              lineHeight: 1.6,
             }}
           >
             {job.companyDescription}
@@ -200,7 +224,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               spacing={1}
               sx={{ alignItems: isMobile ? 'flex-start' : 'center', mb: 1 }}
             >
-              <Typography variant="h5" sx={{ fontWeight: 600, fontSize: isMobile ? '1.2rem' : '1.5rem' }}>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
                 {job.jobTitle}
               </Typography>
               {job.jobType?.map((type) => (
@@ -217,19 +241,81 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               ))}
             </Stack>
             <Box>
-              <Typography
-                variant="body1"
-                sx={{
-                  mb: 2,
-                  color: 'var(--mui-palette-text-secondary)',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 3,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-              >
-                {job.jobDescription}
-              </Typography>
+              {isJobDescriptionExpanded ? (
+                <Box
+                  sx={{
+                    mb: 2,
+                    color: 'var(--mui-palette-text-secondary)',
+                    fontSize: '1rem',
+                    lineHeight: 1.6,
+                    wordBreak: 'break-word',
+                    '& ul': { pl: 3, mb: 1 },
+                    '& li': { mb: 0.5 },
+                    '& strong': { fontWeight: 700 },
+                    '& a': { color: 'var(--mui-palette-primary-main)' },
+                  }}
+                >
+                  <ReactMarkdown>{preprocessJobDescription(job.jobDescription)}</ReactMarkdown>
+                </Box>
+              ) : (
+                <Typography
+                  variant="body1"
+                  sx={{
+                    mb: 2,
+                    color: 'var(--mui-palette-text-secondary)',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    transition: 'all 0.3s ease',
+                    lineHeight: 1.6,
+                    wordBreak: 'break-word',
+                  }}
+                >
+                  {job.jobDescription}
+                </Typography>
+              )}
+              {job.jobDescription ? (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    mt: 1,
+                  }}
+                >
+                  <Typography
+                    component="button"
+                    onClick={toggleJobDescription}
+                    sx={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--mui-palette-primary-main)',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 0.5,
+                      fontSize: '0.875rem',
+                      fontWeight: 500,
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    {isJobDescriptionExpanded ? (
+                      <>
+                        Show less
+                        <CaretUpIcon fontSize="var(--icon-fontSize-md)" />
+                      </>
+                    ) : (
+                      <>
+                        See more
+                        <CaretDownIcon fontSize="var(--icon-fontSize-md)" />
+                      </>
+                    )}
+                  </Typography>
+                </Box>
+              ) : null}
             </Box>
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
               <Chip
@@ -239,6 +325,13 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                   backgroundColor: 'var(--mui-palette-neutral-50)',
                   color: 'var(--mui-palette-neutral-700)',
                   fontWeight: 500,
+                  height: '28px',
+                  border: '1px solid var(--mui-palette-divider)',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
+                  '&:hover': {
+                    backgroundColor: 'var(--mui-palette-neutral-100)',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.08)',
+                  },
                 }}
               />
               {job.location ? (
