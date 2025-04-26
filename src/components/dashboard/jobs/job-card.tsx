@@ -54,7 +54,6 @@ interface JobCardProps {
 
 const MotionCard = motion(Card);
 
-// Utility to preprocess job description for markdown
 function preprocessJobDescription(desc: string) {
   return desc ? desc.replace(/^●\s?/gm, '- ').replace(/\n{2,}/g, '\n\n') : '';
 }
@@ -222,7 +221,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
             <Stack
               direction={isMobile ? 'column' : 'row'}
               spacing={1}
-              sx={{ alignItems: isMobile ? 'flex-start' : 'center', mb: 1 }}
+              sx={{ alignItems: isMobile ? 'flex-start' : 'center', mb: 2 }}
             >
               <Typography variant="h6" sx={{ fontWeight: 600 }}>
                 {job.jobTitle}
@@ -240,42 +239,26 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                 />
               ))}
             </Stack>
-            <Box>
-              {isJobDescriptionExpanded ? (
-                <Box
-                  sx={{
-                    mb: 2,
-                    color: 'var(--mui-palette-text-secondary)',
-                    fontSize: '1rem',
-                    lineHeight: 1.6,
-                    wordBreak: 'break-word',
-                    '& ul': { pl: 3, mb: 1 },
-                    '& li': { mb: 0.5 },
-                    '& strong': { fontWeight: 700 },
-                    '& a': { color: 'var(--mui-palette-primary-main)' },
-                  }}
-                >
-                  <ReactMarkdown>{preprocessJobDescription(job.jobDescription)}</ReactMarkdown>
-                </Box>
-              ) : (
-                <Typography
-                  variant="body1"
-                  sx={{
-                    mb: 2,
-                    color: 'var(--mui-palette-text-secondary)',
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    transition: 'all 0.3s ease',
-                    lineHeight: 1.6,
-                    wordBreak: 'break-word',
-                  }}
-                >
-                  {job.jobDescription}
-                </Typography>
-              )}
+            {/* <Box>
+              <Box
+                sx={{
+                  mb: 2,
+                  color: 'var(--mui-palette-text-secondary)',
+                  fontSize: '1rem',
+                  lineHeight: 1.6,
+                  wordBreak: 'break-word',
+                  '& ul': { pl: 3, mb: 1 },
+                  '& li': { mb: 0.5 },
+                  '& strong': { fontWeight: 700 },
+                  '& a': { color: 'var(--mui-palette-primary-main)' },
+                  maxHeight: isJobDescriptionExpanded ? 'none' : '0em', // ~3 lines
+                  overflow: 'hidden',
+                  position: 'relative',
+                  transition: 'max-height 0.3s',
+                }}
+              >
+                <ReactMarkdown>{preprocessJobDescription(job.jobDescription)}</ReactMarkdown>
+              </Box>
               {job.jobDescription ? (
                 <Box
                   sx={{
@@ -316,7 +299,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
                   </Typography>
                 </Box>
               ) : null}
-            </Box>
+            </Box> */}
             <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}>
               <Chip
                 label={`${job.remoteInPerson} • ${job.paidUnpaid} • ${job.hoursPerWeek} hours/week`}
