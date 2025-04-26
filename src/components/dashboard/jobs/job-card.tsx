@@ -203,7 +203,7 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
               <Typography variant="h5" sx={{ fontWeight: 600, fontSize: isMobile ? '1.2rem' : '1.5rem' }}>
                 {job.jobTitle}
               </Typography>
-              {job.jobType.map((type) => (
+              {job.jobType?.map((type) => (
                 <Chip
                   key={type}
                   label={type}
