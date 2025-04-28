@@ -110,9 +110,16 @@ export function SignUpForm(): React.JSX.Element {
                   'First Name': values.firstName,
                   'Last Name': values.lastName,
                   'New User': true,
+                  'Job Board Access': true,
                 },
               },
             ]);
+          }
+          if (existing.length > 0) {
+            // If exist, update user
+            await base('SFF Candidate Database').update(existing[0].id, {
+              'Job Board Access': true,
+            });
           }
         } catch (err) {
           setError('root', { type: 'server', message: 'Failed to add candidate to database.' });
