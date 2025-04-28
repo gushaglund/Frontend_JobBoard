@@ -16,11 +16,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import Airtable from 'airtable';
 import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
-import { config } from '@/config';
 import { paths } from '@/paths';
 import { createClient as createSupabaseClient } from '@/lib/supabase/client';
 
@@ -35,10 +33,6 @@ const schema = zod.object({
 type Values = zod.infer<typeof schema>;
 
 const defaultValues = { firstName: '', lastName: '', email: '', password: '', terms: false } satisfies Values;
-
-const base = new Airtable({
-  apiKey: config.airtable.apiKey,
-}).base(config.airtable.baseId || '');
 
 export function SignUpForm(): React.JSX.Element {
   const [supabaseClient] = React.useState<SupabaseClient>(createSupabaseClient());
@@ -70,12 +64,7 @@ export function SignUpForm(): React.JSX.Element {
       const { data, error } = await supabaseClient.auth.signUp({
         email: values.email,
         password: values.password,
-        options: {
-          emailRedirectTo: redirectToUrl.href,
-          data: {
-            display_name: `${values.firstName} ${values.lastName}`,
-          },
-        },
+        options: { emailRedirectTo: redirectToUrl.href },
       });
 
       if (error) {
@@ -91,34 +80,6 @@ export function SignUpForm(): React.JSX.Element {
       }
 
       if (data.user) {
-        // Add to SFF Candidate Database
-        try {
-          // Check if email already exists
-          const existing = await base('SFF Candidate Database')
-            .select({
-              filterByFormula: `{Email} = '${values.email}'`,
-              maxRecords: 1,
-            })
-            .firstPage();
-
-          if (existing.length === 0) {
-            // If not exist, add new user
-            await base('SFF Candidate Database').create([
-              {
-                fields: {
-                  Email: values.email,
-                  'First Name': values.firstName,
-                  'Last Name': values.lastName,
-                  'New User': true,
-                },
-              },
-            ]);
-          }
-        } catch (err) {
-          setError('root', { type: 'server', message: 'Failed to add candidate to database.' });
-          setIsPending(false);
-          return;
-        }
         const searchParams = new URLSearchParams({ email: values.email });
         router.push(`${paths.auth.supabase.signUpConfirm}?${searchParams.toString()}`);
         return;
