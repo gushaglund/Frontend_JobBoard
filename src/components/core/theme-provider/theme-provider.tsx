@@ -16,7 +16,6 @@ export interface ThemeProviderProps {
 
 function CustomThemeProvider({ children }: ThemeProviderProps): React.JSX.Element {
   const { settings } = useSettings();
-
   const theme = createTheme({
     primaryColor: settings.primaryColor,
     direction: settings.direction,
