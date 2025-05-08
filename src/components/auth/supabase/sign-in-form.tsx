@@ -149,6 +149,15 @@ export function SignInForm(): React.JSX.Element {
               Forgot password?
             </Link>
           </div>
+          <div>
+            <p style={{ fontSize: '14px', color: '#666', marginTop: '20px' }}>
+              Having trouble logging in?{' '}
+              <a href="mailto:applications@searchfundfellows.com" style={{ color: '#52CAB1' }}>
+                Email us
+              </a>{' '}
+              for help.
+            </p>
+          </div>
         </Stack>
       </Stack>
     </Stack>

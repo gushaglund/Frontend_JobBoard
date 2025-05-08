@@ -215,6 +215,15 @@ export function SignUpForm(): React.JSX.Element {
             <Button disabled={isPending} type="submit" sx={{ backgroundColor: '#52CAB1', color: '#ffffff' }}>
               Create account
             </Button>
+            <div>
+              <p style={{ fontSize: '14px', color: '#666', marginTop: '20px' }}>
+                Having trouble logging in?{' '}
+                <a href="mailto:applications@searchfundfellows.com" style={{ color: '#52CAB1' }}>
+                  Email us
+                </a>{' '}
+                for help.
+              </p>
+            </div>
           </Stack>
         </form>
       </Stack>
