@@ -278,7 +278,7 @@ export default function JobPosting({ job }: { job: Job }) {
                 <Typography fontWeight={600} color="text.primary">
                   Location
                 </Typography>
-                <Typography color="text.secondary">{job.location}</Typography>
+                <Typography color="text.secondary">{job.location || job.remoteInPerson}</Typography>
               </Box>
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, mb: 2 }}>
