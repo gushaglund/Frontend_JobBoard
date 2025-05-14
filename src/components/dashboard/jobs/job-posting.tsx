@@ -219,7 +219,7 @@ export default function JobPosting({ job }: { job: Job }) {
             <MuiLink href={job.applicationLink} target="_blank" rel="noopener noreferrer" underline="none">
               <Button
                 size="large"
-                sx={{ minWidth: { xs: '100%', md: 210 }, backgroundColor: '#52cab1', color: 'white', hover: 'none' }}
+                sx={{ minWidth: { xs: '100%', md: 215 }, backgroundColor: '#52cab1', color: 'white', hover: 'none' }}
               >
                 Apply Now
               </Button>
@@ -227,7 +227,7 @@ export default function JobPosting({ job }: { job: Job }) {
           ) : (
             <Button
               size="large"
-              sx={{ minWidth: { xs: '100%', md: 210 }, backgroundColor: '#52cab1', color: 'white', hover: 'none' }}
+              sx={{ minWidth: { xs: '100%', md: 215 }, backgroundColor: '#52cab1', color: 'white', hover: 'none' }}
             >
               Apply Now
             </Button>
