@@ -53,6 +53,9 @@ export const paths = {
   },
   dashboard: {
     overview: '/dashboard',
+    jobPosting: {
+      details: (id: string) => `/dashboard/job-posting/${id}`,
+    },
     settings: {
       account: '/dashboard/settings/account',
       billing: '/dashboard/settings/billing',

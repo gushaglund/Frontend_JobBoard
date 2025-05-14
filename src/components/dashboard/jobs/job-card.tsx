@@ -17,7 +17,6 @@ import { CheckCircle as CheckCircleIcon } from '@phosphor-icons/react/dist/ssr/C
 import { MapPin as MapPinIcon } from '@phosphor-icons/react/dist/ssr/MapPin';
 import dayjs from 'dayjs';
 import { motion } from 'framer-motion';
-import ReactMarkdown from 'react-markdown';
 
 export interface Job {
   id: string;
@@ -37,6 +36,7 @@ export interface Job {
         url: string;
       };
     };
+    url: string;
   }[];
   companyType: string;
   companyDescription: string;
@@ -46,6 +46,9 @@ export interface Job {
   created_At: string;
   jobType: string[];
   jobDescription: string;
+  website: string;
+  email: string;
+  applicationLink: string;
 }
 
 interface JobCardProps {
@@ -54,13 +57,13 @@ interface JobCardProps {
 
 const MotionCard = motion(Card);
 
-function preprocessJobDescription(desc: string) {
-  return desc ? desc.replace(/^●\s?/gm, '- ').replace(/\n{2,}/g, '\n\n') : '';
-}
+// function preprocessJobDescription(desc: string) {
+//   return desc ? desc.replace(/^●\s?/gm, '- ').replace(/\n{2,}/g, '\n\n') : '';
+// }
 
 export function JobCard({ job }: JobCardProps): React.JSX.Element {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = React.useState(false);
-  const [isJobDescriptionExpanded, setIsJobDescriptionExpanded] = React.useState(false);
+  // const [isJobDescriptionExpanded, setIsJobDescriptionExpanded] = React.useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -69,10 +72,10 @@ export function JobCard({ job }: JobCardProps): React.JSX.Element {
     setIsDescriptionExpanded(!isDescriptionExpanded);
   };
 
-  const toggleJobDescription = (event: React.MouseEvent) => {
-    event.stopPropagation(); // Prevent card click when toggling description
-    setIsJobDescriptionExpanded(!isJobDescriptionExpanded);
-  };
+  // const toggleJobDescription = (event: React.MouseEvent) => {
+  //   event.stopPropagation(); // Prevent card click when toggling description
+  //   setIsJobDescriptionExpanded(!isJobDescriptionExpanded);
+  // };
 
   const handleCardClick = () => {
     if (job.jobPostingURL) {
