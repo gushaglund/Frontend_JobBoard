@@ -15,6 +15,7 @@ import type { NavItemConfig } from '@/types/nav';
 import { usePopover } from '@/hooks/use-popover';
 import { useUser } from '@/hooks/use-user';
 import { Logo } from '@/components/core/logo';
+import { usePathname } from 'next/navigation';
 
 import { MobileNav } from '../mobile-nav';
 import { UserPopover } from '../user-popover/user-popover';
@@ -27,6 +28,8 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
   const [openNav, setOpenNav] = React.useState<boolean>(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <React.Fragment>
       <Box
@@ -90,7 +93,7 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
                 spacing={2}
                 sx={{ alignItems: 'center', flex: '1 1 auto', pt: '5px', pb: '5px', ml: isMobile ? 0 : 20 }}
               >
-                <Box component={RouterLink} href="https://jobs.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
+                <Box component={RouterLink} href="https://jobslist.searchfundfellows.com" sx={{ display: 'inline-flex' }}>
                   <Logo color="light" height={30} width={180} />
                 </Box>
               </Stack>
@@ -103,12 +106,16 @@ export function MainNav({ items }: MainNavProps): React.JSX.Element {
                 justifyContent: 'flex-end',
               }}
             >
-              <Divider
-                flexItem
-                orientation="vertical"
-                sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', lg: 'block' } }}
-              />
-              <UserButton />
+              {pathname !== '/' && pathname !== '/application-form' && pathname !== '/application-list' && pathname !== '/posting' && (
+                <>
+                  <Divider
+                    flexItem
+                    orientation="vertical"
+                    sx={{ borderColor: 'var(--MainNav-divider)', display: { xs: 'none', lg: 'block' } }}
+                  />
+                  <UserButton />
+                </>
+              )}
             </Stack>
           </Stack>
         </Box>

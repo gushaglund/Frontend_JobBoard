@@ -947,36 +947,67 @@ export default function VideoRecording() {
                 >
                   Start Recording
                 </RecordingButton>
-                <Box
+
+                <Paper
+                  elevation={3}
                   sx={{
                     mt: 4,
-                    p: 3,
-                    borderRadius: 2,
-                    bgcolor: alpha(theme.palette.grey[100], 0.5),
-                    border: `1px solid ${alpha(theme.palette.grey[300], 0.5)}`,
+                    p: { xs: 2, md: 4 },
+                    borderRadius: 4,
+                    bgcolor: alpha(theme.palette.grey[100], 0.7),
+                    border: `1px solid ${alpha(theme.palette.grey[300], 0.7)}`,
+                    boxShadow: '0 4px 24px rgba(0,0,0,0.06)',
                     textAlign: 'center',
                   }}
                 >
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: theme.palette.grey[600],
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    Having trouble with the video interview portal? Email us at{' '}
-                    <a
-                      href="mailto:applications@searchfundfellows.com"
-                      style={{
-                        color: '#3B82F6',
-                        textDecoration: 'none',
-                        fontWeight: 500,
+                  <Stack spacing={2} alignItems="center">
+                    <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+                      <MdLightbulb color={theme.palette.warning.main} size={28} style={{ marginBottom: 2 }} />
+                      <Typography
+                        variant="h6"
+                        sx={{
+                          color: theme.palette.warning.dark,
+                          fontWeight: 700,
+                          fontSize: { xs: '1.05rem', md: '1.15rem' },
+                        }}
+                      >
+                        Video or microphone not working? Enable it on your browser as shown{' '}
+                        <a
+                          href="https://dtzdijrozqripmzhdshm.supabase.co/storage/v1/object/public/internal//video_troubleshoot.png"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            color: '#3B82F6',
+                            textDecoration: 'underline',
+                            fontWeight: 700,
+                          }}
+                        >
+                          here
+                        </a>
+                      </Typography>
+                    </Stack>
+                    <Box sx={{ borderTop: `1px solid ${alpha(theme.palette.grey[400], 0.3)}`, width: '100%', my: 1 }} />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: theme.palette.grey[700],
+                        fontSize: '0.98rem',
                       }}
                     >
-                      applications@searchfundfellows.com
-                    </a>
-                  </Typography>
-                </Box>
+                      Having trouble with the video interview portal? Email us at{' '}
+                      <a
+                        href="mailto:applications@searchfundfellows.com"
+                        style={{
+                          color: '#3B82F6',
+                          textDecoration: 'none',
+                          fontWeight: 600,
+                        }}
+                      >
+                        applications@searchfundfellows.com
+                      </a>
+                    </Typography>
+                  </Stack>
+                </Paper>
               </Stack>
             </InstructionCard>
           </Fade>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import GlobalStyles from '@mui/material/GlobalStyles';
-
+import { DynamicLayout } from '@/components/dashboard/layout/dynamic-layout';
 interface LayoutProps {
   children: React.ReactNode;
 }
@@ -20,9 +20,9 @@ export default function Layout({ children }: LayoutProps): React.JSX.Element {
           },
         }}
       />
-      <div>
+      <DynamicLayout>
         <main>{children}</main>
-      </div>
+      </DynamicLayout>
     </React.Fragment>
   );
 }
